@@ -523,72 +523,72 @@ export const FOOD_DATABASE: Record<string, FoodItem> = {
   },
 
   chicken: {
-    id: 'chicken',
-    name: 'Grilled Chicken',
-    category: 'Meat',
-    emoji: '🍗',
-    servingSize: '1 breast (165g)',
-    servingGrams: 165,
-    resources: {
-      water: 560,
-      carbon: 0.86,
-      land: 1.8,
-      energy: 0.9,
-      packaging: 25,
-    },
-    impactLevel: 'medium',
-    confidenceScore: 0.93,
-    funFacts: [
-      'Chicken has 6x lower carbon footprint than beef per gram',
-      'Poultry farming uses 86% less water than beef cattle',
-      'Choosing chicken over beef for 1 year saves 1,500 kg CO2',
-    ],
-    waterComparison: '28 drinking glasses',
-    carbonComparison: '3.44 km of car driving',
-    tags: ['poultry', 'protein', 'medium-impact'],
-    ingredients: [
-      {
-        name: 'Chicken Breast',
-        portion: '165g',
-        water: 450,
-        carbon: 0.62,
-        land: 1.5,
-        energy: 0.6,
-        icon: '🍗',
-        color: '#F59E0B',
-      },
-      {
-        name: 'Feed (Soy/Grain)',
-        portion: 'included',
-        water: 90,
-        carbon: 0.18,
-        land: 0.25,
-        energy: 0.2,
-        icon: '🌽',
-        color: '#D97706',
-      },
-      {
-        name: 'Cooking',
-        portion: 'grill',
-        water: 0,
-        carbon: 0.05,
-        land: 0,
-        energy: 0.08,
-        icon: '🔥',
-        color: '#EF4444',
-      },
-      {
-        name: 'Packaging',
-        portion: '25g',
-        water: 20,
-        carbon: 0.01,
-        land: 0.05,
-        energy: 0.02,
-        icon: '📦',
-        color: '#A78BFA',
-      },
-    ],
+  id: 'chicken',
+  name: 'Grilled Chicken',
+  category: 'Meat',
+  emoji: '🍗',
+  servingSize: '2 leg pieces (550g)',
+  servingGrams: 550,
+  resources: {
+    water: 1860,   // ≈ 560 * (550/165)
+    carbon: 2.86,  // ≈ 0.86 * (550/165)
+    land: 6.0,     // ≈ 1.8 * (550/165)
+    energy: 3.0,   // ≈ 0.9 * (550/165)
+    packaging: 83, // ≈ 25 * (550/165), rounded
   },
+  impactLevel: 'high',
+  confidenceScore: 0.93,
+  funFacts: [
+    'Chicken has 6x lower carbon footprint than beef per gram',
+    'Poultry farming uses 86% less water than beef cattle',
+    'Choosing chicken over beef for 1 year saves 1,500 kg CO2',
+  ],
+  waterComparison: '93 drinking glasses', // ≈ 28 * (550/165)
+  carbonComparison: '11.44 km of car driving', // ≈ 3.44 * (550/165)
+  tags: ['poultry', 'protein', 'medium-impact'],
+  ingredients: [
+    {
+      name: 'Chicken Leg Pieces',
+      portion: '550g',
+      water: 1500,   // ≈ 450 * (550/165)
+      carbon: 2.06,  // ≈ 0.62 * (550/165)
+      land: 5.0,     // ≈ 1.5 * (550/165)
+      energy: 2.0,   // ≈ 0.6 * (550/165)
+      icon: '🍗',
+      color: '#F59E0B',
+    },
+    {
+      name: 'Feed (Soy/Grain)',
+      portion: 'included',
+      water: 300,    // ≈ 90 * (550/165)
+      carbon: 0.60,  // ≈ 0.18 * (550/165)
+      land: 0.83,    // ≈ 0.25 * (550/165)
+      energy: 0.67,  // ≈ 0.2 * (550/165)
+      icon: '🌽',
+      color: '#D97706',
+    },
+    {
+      name: 'Cooking',
+      portion: 'grill',
+      water: 0,
+      carbon: 0.17,  // ≈ 0.05 * (550/165)
+      land: 0,
+      energy: 0.27,  // ≈ 0.08 * (550/165)
+      icon: '🔥',
+      color: '#EF4444',
+    },
+    {
+      name: 'Packaging',
+      portion: '83g',
+      water: 67,     // ≈ 20 * (550/165)
+      carbon: 0.03,  // ≈ 0.01 * (550/165)
+      land: 0.17,    // ≈ 0.05 * (550/165)
+      energy: 0.07,  // ≈ 0.02 * (550/165)
+      icon: '📦',
+      color: '#A78BFA',
+    },
+  ],
+},
 
   pasta: {
     id: 'pasta',

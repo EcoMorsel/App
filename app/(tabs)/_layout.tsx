@@ -42,12 +42,7 @@ export default function TabLayout() {
         name="scan"
         options={{
           title: 'Scan',
-          tabBarIcon: ({ color, focused }) => (
-            <View style={[styles.scanBtn, { backgroundColor: focused ? C.primary : C.primaryMuted, borderColor: focused ? C.primaryLight : C.border }]}>
-              <MaterialCommunityIcons name="camera-outline" size={26} color={focused ? C.white : color} />
-            </View>
-          ),
-          tabBarLabel: () => null,
+          tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="camera-outline" size={size} color={color} />,
         }}
       />
       <Tabs.Screen

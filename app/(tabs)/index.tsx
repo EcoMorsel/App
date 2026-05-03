@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '@/constants/theme';
@@ -22,12 +23,10 @@ import { FoodScanCard } from '@/components/feature/FoodScanCard';
 const { width } = Dimensions.get('window');
 
 const QUICK_FOODS = [
-  FOOD_DATABASE.pizza,
-  FOOD_DATABASE.burger,
-  FOOD_DATABASE.apple,
-  FOOD_DATABASE.steak,
-  FOOD_DATABASE.chicken,
   FOOD_DATABASE.salad,
+  FOOD_DATABASE.pizza,
+  FOOD_DATABASE.chicken,
+  FOOD_DATABASE.burger,
 ];
 
 export default function HomeScreen() {
@@ -58,7 +57,6 @@ export default function HomeScreen() {
 
   const STAT_ROWS = [
     { icon: 'water', label: 'Avg meal uses', value: '~1,800L', sub: 'of water', color: C.water },
-    { icon: 'cloud-outline', label: 'Food causes', value: '26%', sub: 'of global emissions', color: C.carbon },
     { icon: 'leaf', label: 'Going vegan saves', value: '73%', sub: 'food-related emissions', color: C.primary },
   ];
 
@@ -69,33 +67,26 @@ export default function HomeScreen() {
         {/* Hero */}
         <Animated.View style={[styles.hero, { opacity: heroAnim, transform: [{ translateY: heroAnim.interpolate({ inputRange: [0, 1], outputRange: [20, 0] }) }] }]}>
           <Image source={require('@/assets/images/hero-bg.png')} style={styles.heroBg} contentFit="cover" />
-          <View style={styles.heroOverlay} />
+          <LinearGradient
+            colors={['rgba(10,15,13,0.2)', C.background]}
+            locations={[0.4, 4]}
+            style={styles.heroOverlay}
+          />
           <View style={styles.heroContent}>
-            <View style={[styles.heroBadge, { backgroundColor: C.primaryMuted, borderColor: C.primary + '33' }]}>
+            <View style={[styles.heroBadge, { backgroundColor: 'transparent', borderColor: C.primary, borderWidth: 1 }]}>
               <Ionicons name="leaf" size={12} color={C.primary} />
               <Text style={[styles.heroBadgeText, { color: C.primary }]}>Food Footprint</Text>
             </View>
             <Text style={styles.heroTitle}>See the hidden{'\n'}cost of food</Text>
             <Text style={styles.heroSubtitle}>
-              Every meal has an invisible price — water, carbon, land, and energy. We make it visible.
+              Every meal has an invisible price
+              {'\n'}We make it visible.
             </Text>
-            <TouchableOpacity style={[styles.heroCta, { backgroundColor: C.primary }]} onPress={() => router.push('/scan')} activeOpacity={0.8}>
+            <TouchableOpacity style={[styles.heroCta, { backgroundColor: C.primary, borderBottomWidth: 4, borderBottomColor: C.primaryDark }]} onPress={() => router.push('/scan')} activeOpacity={0.8}>
               <MaterialCommunityIcons name="camera-outline" size={20} color={C.black} />
               <Text style={[styles.heroCtaText, { color: C.black }]}>Scan a Food</Text>
             </TouchableOpacity>
           </View>
-        </Animated.View>
-
-        {/* Stats Strip */}
-        <Animated.View style={[styles.statsRow, { opacity: statsAnim, transform: [{ translateY: statsAnim.interpolate({ inputRange: [0, 1], outputRange: [10, 0] }) }] }]}>
-          {STAT_ROWS.map((stat, i) => (
-            <View key={i} style={[styles.statCard, { backgroundColor: C.card, borderColor: C.border }]}>
-              <MaterialCommunityIcons name={stat.icon as any} size={18} color={stat.color} />
-              <Text style={[styles.statLabel, { color: C.textMuted }]}>{stat.label}</Text>
-              <Text style={[styles.statValue, { color: stat.color }]}>{stat.value}</Text>
-              <Text style={[styles.statSub, { color: C.textMuted }]}>{stat.sub}</Text>
-            </View>
-          ))}
         </Animated.View>
 
         {/* Quick Explore */}
@@ -148,8 +139,8 @@ export default function HomeScreen() {
         ) : null}
 
         {/* Impact Legend */}
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: C.text }]}>Impact Guide</Text>
+        <View style={[styles.section, { marginBottom: 14, marginTop: 10 }]}>
+          <Text style={[styles.sectionTitle, { color: C.text, marginBottom: 20 }]}>Impact Guide</Text>
           <View style={[styles.legendCard, { backgroundColor: C.card, borderColor: C.border }]}>
             {[
               { level: 'Low', color: C.low, desc: 'Vegetables, fruits, legumes' },
@@ -165,13 +156,17 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* Disclaimer */}
-        <View style={[styles.disclaimer, { backgroundColor: C.surfaceElevated, borderColor: C.border }]}>
-          <Ionicons name="information-circle-outline" size={14} color={C.textMuted} />
-          <Text style={[styles.disclaimerText, { color: C.textMuted }]}>
-            Values are estimates based on typical ingredients, serving sizes, and average production methods.
-          </Text>
-        </View>
+        {/* Stats Strip */}
+        <Animated.View style={[styles.statsRow, { opacity: statsAnim, transform: [{ translateY: statsAnim.interpolate({ inputRange: [0, 1], outputRange: [10, 0] }) }] }]}>
+          {STAT_ROWS.map((stat, i) => (
+            <View key={i} style={[styles.statCard, { backgroundColor: C.card, borderColor: C.border }]}>
+              <MaterialCommunityIcons name={stat.icon as any} size={24} color={stat.color} />
+              <Text style={[styles.statLabel, { color: C.textMuted }]}>{stat.label}</Text>
+              <Text style={[styles.statValue, { color: stat.color }]}>{stat.value}</Text>
+              <Text style={[styles.statSub, { color: C.textMuted }]}>{stat.sub}</Text>
+            </View>
+          ))}
+        </Animated.View>
 
         <View style={{ height: Spacing.xl }} />
       </ScrollView>
@@ -183,9 +178,9 @@ const styles = StyleSheet.create({
   root: { flex: 1 },
   scroll: { flex: 1 },
   scrollContent: { paddingBottom: Spacing.xl },
-  hero: { height: 360, marginBottom: Spacing.lg, overflow: 'hidden', borderBottomLeftRadius: BorderRadius.xxl, borderBottomRightRadius: BorderRadius.xxl },
+  hero: { height: 360, overflow: 'hidden', marginBottom: 22 },
   heroBg: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
-  heroOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(10,15,13,0.72)' },
+  heroOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
   heroContent: { flex: 1, justifyContent: 'flex-end', padding: Spacing.lg, paddingBottom: Spacing.xl },
   heroBadge: { flexDirection: 'row', alignItems: 'center', gap: 5, alignSelf: 'flex-start', paddingHorizontal: Spacing.md, paddingVertical: 6, borderRadius: BorderRadius.full, borderWidth: 1, marginBottom: Spacing.md },
   heroBadgeText: { fontSize: FontSize.xs, fontWeight: FontWeight.bold, letterSpacing: 0.8, textTransform: 'uppercase' },
@@ -193,18 +188,18 @@ const styles = StyleSheet.create({
   heroSubtitle: { fontSize: FontSize.md, color: '#A3C4A8', lineHeight: 24, marginBottom: Spacing.lg },
   heroCta: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, alignSelf: 'flex-start', paddingHorizontal: Spacing.lg, paddingVertical: Spacing.md, borderRadius: BorderRadius.full },
   heroCtaText: { fontSize: FontSize.md, fontWeight: FontWeight.bold },
-  statsRow: { flexDirection: 'row', paddingHorizontal: Spacing.md, gap: Spacing.sm, marginBottom: Spacing.lg },
-  statCard: { flex: 1, borderRadius: BorderRadius.lg, borderWidth: 1, padding: Spacing.sm, alignItems: 'center', gap: 3 },
-  statLabel: { fontSize: 9, textAlign: 'center', marginTop: 2 },
-  statValue: { fontSize: FontSize.md, fontWeight: FontWeight.heavy, textAlign: 'center' },
-  statSub: { fontSize: 9, textAlign: 'center' },
+  statsRow: { flexDirection: 'row', paddingHorizontal: Spacing.md, gap: 14 },
+  statCard: { flex: 1, borderRadius: BorderRadius.lg, borderWidth: 1, padding: 12, alignItems: 'center', gap: 6 },
+  statLabel: { fontSize: 11, textAlign: 'center', marginTop: 2 },
+  statValue: { fontSize: 20, fontWeight: FontWeight.bold, textAlign: 'center' },
+  statSub: { fontSize: 11, textAlign: 'center' },
   section: { paddingHorizontal: Spacing.md, marginBottom: Spacing.lg },
   sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: Spacing.sm },
   sectionTitle: { fontSize: FontSize.xl, fontWeight: FontWeight.bold, marginBottom: Spacing.xs },
   sectionSubtitle: { fontSize: FontSize.sm, marginBottom: Spacing.md },
   seeAll: { fontSize: FontSize.sm, fontWeight: FontWeight.semibold },
-  quickGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
-  quickItem: { width: (width - Spacing.md * 2 - Spacing.sm * 2) / 3, borderRadius: BorderRadius.lg, borderWidth: 1, padding: Spacing.md, alignItems: 'center', gap: 6 },
+  quickGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 14, marginBottom: 16 },
+  quickItem: { width: (width - Spacing.md * 2 - 14) / 2, borderRadius: BorderRadius.lg, borderWidth: 1, padding: Spacing.lg, alignItems: 'center', gap: 10 },
   quickEmoji: { fontSize: 28 },
   quickName: { fontSize: FontSize.xs, fontWeight: FontWeight.semibold, textAlign: 'center' },
   impactPip: { width: 6, height: 6, borderRadius: 3 },
@@ -214,6 +209,4 @@ const styles = StyleSheet.create({
   legendDot: { width: 10, height: 10, borderRadius: 5 },
   legendLevel: { fontSize: FontSize.sm, fontWeight: FontWeight.bold, width: 55 },
   legendDesc: { fontSize: FontSize.sm, flex: 1 },
-  disclaimer: { flexDirection: 'row', alignItems: 'flex-start', gap: Spacing.xs, marginHorizontal: Spacing.md, padding: Spacing.md, borderRadius: BorderRadius.md, borderWidth: 1 },
-  disclaimerText: { flex: 1, fontSize: FontSize.xs, lineHeight: 18 },
 });
