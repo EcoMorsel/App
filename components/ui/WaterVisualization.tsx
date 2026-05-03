@@ -1,64 +1,53 @@
 // WaterVisualization - Animated water glasses stacking effect
 
 import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Animated, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Animated } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Colors, Spacing, FontSize, FontWeight, BorderRadius } from '@/constants/theme';
+import { Spacing, FontSize, FontWeight, BorderRadius } from '@/constants/theme';
+import { useApp } from '@/hooks/useApp';
 
 interface WaterVisualizationProps {
   liters: number;
   comparison: string;
 }
 
-const GLASS_ML = 200; // each glass = 200ml = 0.2L
-
 export function WaterVisualization({ liters, comparison }: WaterVisualizationProps) {
-  const glasses = Math.min(Math.round(liters / 0.2), 60); // max 60 glasses displayed
+  const { C } = useApp();
+  const glasses = Math.min(Math.round(liters / 0.2), 60);
   const displayGlasses = Math.round(liters / 0.2);
   const animValue = useRef(new Animated.Value(0)).current;
-  const countAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    Animated.parallel([
-      Animated.timing(animValue, {
-        toValue: 1,
-        duration: 1200,
-        useNativeDriver: true,
-      }),
-      Animated.timing(countAnim, {
-        toValue: liters,
-        duration: 1500,
-        useNativeDriver: false,
-      }),
-    ]).start();
+    Animated.timing(animValue, {
+      toValue: 1,
+      duration: 1200,
+      useNativeDriver: true,
+    }).start();
   }, [liters]);
 
-  const animatedLiters = countAnim.interpolate({
-    inputRange: [0, liters],
-    outputRange: [0, liters],
-  });
-
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {
+      backgroundColor: C.waterMuted,
+      borderColor: C.water + '33',
+    }]}>
       <View style={styles.header}>
         <View style={styles.titleRow}>
-          <MaterialCommunityIcons name="water" size={20} color={Colors.water} />
-          <Text style={styles.title}>Water Used</Text>
+          <MaterialCommunityIcons name="water" size={20} color={C.water} />
+          <Text style={[styles.title, { color: C.textSecondary }]}>Water Used</Text>
         </View>
         <View style={styles.numberRow}>
-          <Animated.Text style={styles.bigNumber}>
+          <Text style={[styles.bigNumber, { color: C.waterLight }]}>
             {liters.toLocaleString()}
-          </Animated.Text>
-          <Text style={styles.unit}>L</Text>
+          </Text>
+          <Text style={[styles.unit, { color: C.water }]}>L</Text>
         </View>
-        <Text style={styles.comparison}>= {comparison}</Text>
+        <Text style={[styles.comparison, { color: C.textSecondary }]}>= {comparison}</Text>
       </View>
 
       <View style={styles.glassGrid}>
         {Array.from({ length: glasses }).map((_, i) => {
-          const delay = Math.min(i * 30, 800);
           const anim = useRef(new Animated.Value(0)).current;
-          
+          const delay = Math.min(i * 30, 800);
           useEffect(() => {
             Animated.timing(anim, {
               toValue: 1,
@@ -73,31 +62,28 @@ export function WaterVisualization({ liters, comparison }: WaterVisualizationPro
               key={i}
               style={[
                 styles.glass,
-                {
-                  opacity: anim,
-                  transform: [{ scale: anim }],
-                },
+                { backgroundColor: C.water + '26', opacity: anim, transform: [{ scale: anim }] },
               ]}
             >
-              <MaterialCommunityIcons name="cup-water" size={18} color={Colors.waterLight} />
+              <MaterialCommunityIcons name="cup-water" size={18} color={C.waterLight} />
             </Animated.View>
           );
         })}
-        {displayGlasses > 60 && (
-          <View style={styles.moreGlasses}>
-            <Text style={styles.moreText}>+{displayGlasses - 60} more</Text>
+        {displayGlasses > 60 ? (
+          <View style={[styles.moreGlasses, { backgroundColor: C.water + '1A' }]}>
+            <Text style={[styles.moreText, { color: C.water }]}>+{displayGlasses - 60} more</Text>
           </View>
-        )}
+        ) : null}
       </View>
 
-      <View style={styles.footer}>
+      <View style={[styles.footer, { borderTopColor: C.water + '26' }]}>
         <View style={styles.statRow}>
-          <View style={[styles.dot, { backgroundColor: Colors.water }]} />
-          <Text style={styles.statText}>1 glass = 200ml of water</Text>
+          <View style={[styles.dot, { backgroundColor: C.water }]} />
+          <Text style={[styles.statText, { color: C.textMuted }]}>1 glass = 200ml of water</Text>
         </View>
         <View style={styles.statRow}>
-          <View style={[styles.dot, { backgroundColor: Colors.waterLight }]} />
-          <Text style={styles.statText}>Daily need: ~8 glasses (1.6L)</Text>
+          <View style={[styles.dot, { backgroundColor: C.waterLight }]} />
+          <Text style={[styles.statText, { color: C.textMuted }]}>Daily need: ~8 glasses (1.6L)</Text>
         </View>
       </View>
     </View>
@@ -106,10 +92,8 @@ export function WaterVisualization({ liters, comparison }: WaterVisualizationPro
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.waterMuted,
     borderRadius: BorderRadius.lg,
     borderWidth: 1,
-    borderColor: 'rgba(59,130,246,0.2)',
     padding: Spacing.md,
     overflow: 'hidden',
   },
@@ -124,7 +108,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: FontSize.sm,
-    color: Colors.textSecondary,
     fontWeight: FontWeight.medium,
     textTransform: 'uppercase',
     letterSpacing: 0.8,
@@ -135,20 +118,17 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   bigNumber: {
-    fontSize: FontSize.hero,
+    fontSize: 42,
     fontWeight: FontWeight.heavy,
-    color: Colors.waterLight,
     lineHeight: 48,
   },
   unit: {
     fontSize: FontSize.xxl,
-    color: Colors.water,
     fontWeight: FontWeight.bold,
     marginBottom: 6,
   },
   comparison: {
     fontSize: FontSize.md,
-    color: Colors.textSecondary,
     marginTop: 2,
   },
   glassGrid: {
@@ -162,7 +142,6 @@ const styles = StyleSheet.create({
     height: 28,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(59,130,246,0.15)',
     borderRadius: 6,
   },
   moreGlasses: {
@@ -170,18 +149,15 @@ const styles = StyleSheet.create({
     height: 28,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(59,130,246,0.1)',
     borderRadius: 6,
   },
   moreText: {
     fontSize: FontSize.xs,
-    color: Colors.water,
     fontWeight: FontWeight.semibold,
   },
   footer: {
     gap: 4,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(59,130,246,0.15)',
     paddingTop: Spacing.sm,
   },
   statRow: {
@@ -196,6 +172,5 @@ const styles = StyleSheet.create({
   },
   statText: {
     fontSize: FontSize.xs,
-    color: Colors.textMuted,
   },
 });

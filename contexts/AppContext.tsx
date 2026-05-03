@@ -3,31 +3,37 @@
 import React, { createContext, useState, useCallback, ReactNode } from 'react';
 import { ScanResult } from '@/services/foodEstimationService';
 import { FoodItem } from '@/constants/foodData';
+import { ThemeMode, ThemeColors, ColorTokens } from '@/constants/theme';
 
 export interface AppContextType {
   // Current scan
   currentScan: ScanResult | null;
   setCurrentScan: (scan: ScanResult | null) => void;
-  
+
   // Processing state
   isProcessing: boolean;
   setIsProcessing: (processing: boolean) => void;
-  
+
   // History (in-memory, synced with storage)
   history: ScanResult[];
   addToHistory: (scan: ScanResult) => void;
   removeFromHistory: (scanId: string) => void;
   clearHistory: () => void;
-  
+
   // Compare
   compareA: FoodItem | null;
   compareB: FoodItem | null;
   setCompareA: (food: FoodItem | null) => void;
   setCompareB: (food: FoodItem | null) => void;
-  
+
   // Favorites
   favorites: string[];
   toggleFavorite: (foodId: string) => void;
+
+  // Theme
+  themeMode: ThemeMode;
+  toggleTheme: () => void;
+  C: ColorTokens;
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -39,6 +45,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [compareA, setCompareA] = useState<FoodItem | null>(null);
   const [compareB, setCompareB] = useState<FoodItem | null>(null);
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [themeMode, setThemeMode] = useState<ThemeMode>('dark');
+
+  const C = ThemeColors[themeMode];
 
   const addToHistory = useCallback((scan: ScanResult) => {
     setHistory(prev => [scan, ...prev].slice(0, 50));
@@ -58,6 +67,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     );
   }, []);
 
+  const toggleTheme = useCallback(() => {
+    setThemeMode(prev => (prev === 'dark' ? 'light' : 'dark'));
+  }, []);
+
   return (
     <AppContext.Provider
       value={{
@@ -75,6 +88,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setCompareB,
         favorites,
         toggleFavorite,
+        themeMode,
+        toggleTheme,
+        C,
       }}
     >
       {children}

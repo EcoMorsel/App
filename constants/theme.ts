@@ -1,6 +1,8 @@
 // FoodFootprint Design System
 
-export const Colors = {
+export type ThemeMode = 'dark' | 'light';
+
+const DarkColors = {
   // Base
   background: '#0A0F0D',
   surface: '#111A13',
@@ -64,6 +66,81 @@ export const Colors = {
   medium: '#F59E0B',
   high: '#EF4444',
 };
+
+const LightColors = {
+  // Base
+  background: '#F0FDF4',
+  surface: '#FFFFFF',
+  surfaceElevated: '#F6FEF9',
+  card: '#FFFFFF',
+  cardHover: '#ECFDF5',
+  border: '#D1FAE5',
+  borderLight: '#E7F9EE',
+
+  // Brand
+  primary: '#16A34A',
+  primaryDark: '#15803D',
+  primaryLight: '#22C55E',
+  primaryMuted: 'rgba(22,163,74,0.10)',
+
+  // Accent
+  amber: '#D97706',
+  amberMuted: 'rgba(217,119,6,0.10)',
+
+  // Resource Colors
+  water: '#2563EB',
+  waterLight: '#3B82F6',
+  waterMuted: 'rgba(37,99,235,0.10)',
+
+  carbon: '#6B7280',
+  carbonDark: '#4B5563',
+  carbonMuted: 'rgba(107,114,128,0.10)',
+
+  land: '#B45309',
+  landLight: '#D97706',
+  landMuted: 'rgba(180,83,9,0.10)',
+
+  energy: '#D97706',
+  energyLight: '#F59E0B',
+  energyMuted: 'rgba(217,119,6,0.10)',
+
+  packaging: '#7C3AED',
+  packagingMuted: 'rgba(124,58,237,0.10)',
+
+  // Text
+  text: '#052E16',
+  textSecondary: '#166534',
+  textMuted: '#6B7280',
+  textDisabled: '#D1D5DB',
+
+  // Semantic
+  success: '#16A34A',
+  warning: '#D97706',
+  error: '#DC2626',
+  info: '#2563EB',
+
+  // UI
+  overlay: 'rgba(0,0,0,0.5)',
+  overlayLight: 'rgba(0,0,0,0.2)',
+  shimmer: 'rgba(0,0,0,0.03)',
+  white: '#FFFFFF',
+  black: '#000000',
+
+  // Impact Level Colors
+  low: '#16A34A',
+  medium: '#D97706',
+  high: '#DC2626',
+};
+
+export type ColorTokens = typeof DarkColors;
+
+export const ThemeColors: Record<ThemeMode, ColorTokens> = {
+  dark: DarkColors,
+  light: LightColors,
+};
+
+// Default export kept for backward-compat (dark)
+export const Colors = DarkColors;
 
 export const Spacing = {
   xs: 4,
