@@ -1,4 +1,4 @@
-// FoodFootprint - Home / Landing Page
+// EcoMorsel - Home / Landing Page
 
 import React, { useRef, useEffect } from 'react';
 import {
@@ -75,9 +75,9 @@ export default function HomeScreen() {
           <View style={styles.heroContent}>
             <View style={[styles.heroBadge, { backgroundColor: 'transparent', borderColor: C.primary, borderWidth: 1 }]}>
               <Ionicons name="leaf" size={12} color={C.primary} />
-              <Text style={[styles.heroBadgeText, { color: C.primary }]}>Food Footprint</Text>
+              <Text style={[styles.heroBadgeText, { color: C.primary }]}>EcoMorsel</Text>
             </View>
-            <Text style={styles.heroTitle}>See the hidden{'\n'}cost of food</Text>
+            <Text style={styles.heroTitle}>See the hidden{'\n'}resources behind{' \n'}every bite.</Text>
             <Text style={styles.heroSubtitle}>
               Every meal has an invisible price
               {'\n'}We make it visible.

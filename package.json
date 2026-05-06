@@ -1,5 +1,5 @@
 {
-  "name": "onspace-app",
+  "name": "ecomorsel",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
@@ -16,6 +16,7 @@
     "@expo/metro-runtime": "55.0.10",
     "@expo/styleguide-native": "^1.0.1",
     "@expo/vector-icons": "^15.1.1",
+    "@google/genai": "^1.52.0",
     "@gorhom/bottom-sheet": "4.4.6",
     "@graphql-codegen/introspection": "^2.1.1",
     "@lucide/lab": "^0.1.2",

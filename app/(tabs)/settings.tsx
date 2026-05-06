@@ -1,4 +1,4 @@
-// FoodFootprint - Settings / Info Page
+// EcoMorsel - Settings / Info Page
 
 import React from 'react';
 import {
@@ -67,7 +67,7 @@ export default function SettingsScreen() {
     <View style={[styles.root, { backgroundColor: C.background, paddingTop: insets.top }]}>
       <View style={[styles.header, { borderBottomColor: C.border }]}>
         <Text style={[styles.headerTitle, { color: C.text }]}>About & Info</Text>
-        <Text style={[styles.headerSub, { color: C.textMuted }]}>How FoodFootprint works</Text>
+        <Text style={[styles.headerSub, { color: C.textMuted }]}>How EcoMorsel works</Text>
       </View>
 
       <ScrollView
@@ -112,9 +112,9 @@ export default function SettingsScreen() {
           borderColor: C.primary + '33',
         }]}>
           <Text style={styles.introEmoji}>🌿</Text>
-          <Text style={[styles.introTitle, { color: C.text }]}>FoodFootprint</Text>
+          <Text style={[styles.introTitle, { color: C.text }]}>EcoMorsel</Text>
           <Text style={[styles.introText, { color: C.textSecondary }]}>
-            Every food item has a hidden cost — water pulled from rivers, land cleared for farms, carbon released into the atmosphere. FoodFootprint makes the invisible visible so you can make informed, planet-friendly choices.
+            See the hidden resources behind every bite. Every food item has a hidden cost — water pulled from rivers, land cleared for farms, carbon released into the atmosphere. EcoMorsel makes the invisible visible so you can make informed, planet-friendly choices.
           </Text>
           <View style={[styles.introBadge, { backgroundColor: C.card, borderColor: C.border }]}>
             <Text style={[styles.introBadgeText, { color: C.textMuted }]}>Educational • Non-commercial • Estimate-based</Text>
@@ -128,7 +128,7 @@ export default function SettingsScreen() {
             <Text style={[styles.sectionTitle, { color: C.amber }]}>Important Disclaimer</Text>
           </View>
           <Text style={[styles.disclaimerText, { color: C.textSecondary }]}>
-            All values shown in FoodFootprint are{' '}
+            All values shown in EcoMorsel are{' '}
             <Text style={[styles.bold, { color: C.amber }]}>estimates</Text> based on average global
             data for typical production methods. Actual environmental impact varies significantly based on:
           </Text>
@@ -241,7 +241,7 @@ export default function SettingsScreen() {
 
         {/* Version */}
         <View style={styles.versionRow}>
-          <Text style={[styles.versionText, { color: C.textMuted }]}>FoodFootprint v1.0</Text>
+          <Text style={[styles.versionText, { color: C.textMuted }]}>EcoMorsel v1.0</Text>
           <Text style={[styles.versionSub, { color: C.textDisabled }]}>For educational purposes only</Text>
         </View>
 

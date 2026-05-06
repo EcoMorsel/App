@@ -1,4 +1,4 @@
-// FoodFootprint - Results Page
+// EcoMorsel - Results Page
 
 import React, { useEffect, useRef, useState } from 'react';
 import {
@@ -55,7 +55,7 @@ export default function ResultsScreen() {
   const handleShare = async () => {
     try {
       await Share.share({
-        message: `🌿 FoodFootprint Report\n\n${food.emoji} ${food.name} (${food.servingSize})\n\n💧 Water: ${food.resources.water.toLocaleString()}L\n☁️ CO₂: ${food.resources.carbon}kg\n🌾 Land: ${food.resources.land}m²\n⚡ Energy: ${food.resources.energy}kWh\n\nImpact: ${food.impactLevel.toUpperCase()}\n\n"${food.funFacts[0]}"\n\nGenerated with FoodFootprint`,
+        message: `🌿 EcoMorsel Report\n\n${food.emoji} ${food.name} (${food.servingSize})\n\n💧 Water: ${food.resources.water.toLocaleString()}L\n☁️ CO₂: ${food.resources.carbon}kg\n🌾 Land: ${food.resources.land}m²\n⚡ Energy: ${food.resources.energy}kWh\n\nImpact: ${food.impactLevel.toUpperCase()}\n\n"${food.funFacts[0]}"\n\nGenerated with EcoMorsel`,
       });
     } catch (_) {}
   };

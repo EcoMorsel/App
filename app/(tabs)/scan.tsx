@@ -64,7 +64,7 @@ export default function ScanScreen() {
       if (result) router.push('/processing');
     } else {
       if (!selectedImage) { shake(); return; }
-      const result = await analyzeFromImage(selectedImage, activeTab);
+      const result = await analyzeFromImage(selectedImage, activeTab === 'camera' ? 'camera' : 'image');
       if (result) router.push('/processing');
     }
   };

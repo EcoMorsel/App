@@ -1,6 +1,7 @@
 // FoodFootprint - Food Estimation Service
 
 import { FOOD_DATABASE, KEYWORD_MAP, CATEGORY_ESTIMATES, FoodItem, FoodResource } from '@/constants/foodData';
+import { queryFoodResources } from '@/services/llmService';
 
 export interface ScanResult {
   food: FoodItem;
@@ -118,46 +119,88 @@ function generateGenericFood(name: string): FoodItem {
   };
 }
 
-// Simulate image recognition with a weighted random selection
-function recognizeFoodFromImage(): string {
-  const foods = ['pizza', 'burger', 'apple', 'salad', 'chicken', 'pasta', 'banana'];
-  const weights = [0.25, 0.2, 0.15, 0.15, 0.1, 0.1, 0.05];
-  let random = Math.random();
-  for (let i = 0; i < foods.length; i++) {
-    random -= weights[i];
-    if (random <= 0) return foods[i];
-  }
-  return 'pizza';
-}
-
+/**
+ * Analyze food from text input using the LLM.
+ * Falls back to local keyword matching + generic estimation if LLM fails.
+ */
 export async function analyzeText(text: string): Promise<ScanResult> {
-  await new Promise(resolve => setTimeout(resolve, 2200));
-  
-  const found = findFoodByKeyword(text);
-  const food = found || generateGenericFood(text);
-  
-  return {
-    food,
-    inputType: 'text',
-    rawInput: text,
-    timestamp: Date.now(),
-    scanId: generateScanId(),
-  };
+  try {
+    const llmResult = await queryFoodResources(text.trim());
+    const food: FoodItem = {
+      ...llmResult,
+      id: llmResult.name.toLowerCase().replace(/\s+/g, '-'),
+      confidenceScore: 0.92,
+    };
+
+    return {
+      food,
+      inputType: 'text',
+      rawInput: text,
+      timestamp: Date.now(),
+      scanId: generateScanId(),
+    };
+  } catch (err) {
+    console.warn('[FoodEstimation] LLM text analysis failed, using local fallback:', err);
+    // Fallback to local keyword matching
+    const found = findFoodByKeyword(text);
+    const food = found || generateGenericFood(text);
+
+    return {
+      food,
+      inputType: 'text',
+      rawInput: text,
+      timestamp: Date.now(),
+      scanId: generateScanId(),
+    };
+  }
 }
 
-export async function analyzeImage(imageUri: string, inputType: 'image' | 'camera' = 'image'): Promise<ScanResult> {
-  await new Promise(resolve => setTimeout(resolve, 3000));
-  
-  const recognizedFoodId = recognizeFoodFromImage();
-  const food = FOOD_DATABASE[recognizedFoodId] || FOOD_DATABASE['pizza'];
-  
-  return {
-    food,
-    inputType,
-    rawInput: imageUri,
-    timestamp: Date.now(),
-    scanId: generateScanId(),
-  };
+/**
+ * Analyze food from an image using the LLM's vision capabilities.
+ * Falls back to local generic estimation if LLM fails.
+ *
+ * @param imageUri - Local file URI of the image
+ * @param inputType - Whether image was from gallery or camera
+ * @param imageBase64 - Base64-encoded image data for the LLM
+ */
+export async function analyzeImage(
+  imageUri: string,
+  inputType: 'image' | 'camera' = 'image',
+  imageBase64?: string,
+): Promise<ScanResult> {
+  try {
+
+    if (!imageBase64) {
+      throw new Error('No base64 image data provided');
+    }
+
+    const llmResult = await queryFoodResources('', imageBase64);
+    const food: FoodItem = {
+      ...llmResult,
+      id: llmResult.name.toLowerCase().replace(/\s+/g, '-'),
+      confidenceScore: 0.88,
+    };
+
+    return {
+      food,
+      inputType,
+      rawInput: imageUri,
+      timestamp: Date.now(),
+      scanId: generateScanId(),
+    };
+  } catch (err) {
+    console.warn('[FoodEstimation] LLM image analysis failed, using local fallback:', err);
+    // Fallback to generic food
+    const food = generateGenericFood('Unknown Food');
+
+    return {
+      food,
+      inputType,
+      rawInput: imageUri,
+      timestamp: Date.now(),
+      scanId: generateScanId(),
+    };
+  }
 }
 
 export function getFoodById(id: string): FoodItem | null {
