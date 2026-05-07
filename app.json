@@ -8,7 +8,8 @@
     "scheme": "ecomorsel",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.akashsingh.ecomorsel"
     },
     "android": {
       "adaptiveIcon": {
