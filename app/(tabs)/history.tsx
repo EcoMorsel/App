@@ -1,7 +1,7 @@
 // FoodFootprint - History Page
 
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
@@ -9,13 +9,11 @@ import { Spacing, FontSize, FontWeight, BorderRadius } from '@/constants/theme';
 import { useApp } from '@/hooks/useApp';
 import { FoodScanCard } from '@/components/feature/FoodScanCard';
 import { ScanResult } from '@/services/foodEstimationService';
-import { useAlert } from '@/template';
 
 export default function HistoryScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { history, clearHistory, removeFromHistory, setCurrentScan, setCompareA, C } = useApp();
-  const { showAlert } = useAlert();
   const [filter, setFilter] = useState<'all' | 'low' | 'medium' | 'high'>('all');
 
   const filtered = filter === 'all' ? history : history.filter(s => s.food.impactLevel === filter);
@@ -24,7 +22,7 @@ export default function HistoryScreen() {
   const totalCarbon = history.reduce((sum, s) => sum + s.food.resources.carbon, 0);
 
   const handleClear = () => {
-    showAlert('Clear History?', 'This will delete all your scan history. This cannot be undone.', [
+    Alert.alert('Clear History?', 'This will delete all your scan history. This cannot be undone.', [
       { text: 'Cancel', style: 'cancel' },
       { text: 'Clear All', style: 'destructive', onPress: clearHistory },
     ]);

@@ -2,8 +2,10 @@
 
 import { FoodItem, FoodResource } from '@/constants/foodData';
 
-// Proxy URL from environment variable (set in .env as EXPO_PUBLIC_PROXY_URL)
-const PROXY_URL = process.env.EXPO_PUBLIC_PROXY_URL || 'http://localhost:3099/analyze';
+// Proxy URL from environment variable (set in .env as EXPO_PUBLIC_PROXY_URL).
+// Defaults to the deployed Next.js API route.
+const PROXY_URL = process.env.EXPO_PUBLIC_PROXY_URL || 'https://ecomorsel.vercel.app/analyze';
+const API_SECRET = process.env.EXPO_PUBLIC_API_SECRET;
 
 /**
  * Validate and fill in any missing fields in the parsed food data.
@@ -72,9 +74,15 @@ export async function queryFoodResources(
 ): Promise<Omit<FoodItem, 'id' | 'confidenceScore'>> {
   console.log('[LLM] Sending request to proxy', imageBase64 ? '(with image)' : '(text-only)');
 
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+
+  if (API_SECRET) {
+    headers['x-api-secret'] = API_SECRET;
+  }
+
   const response = await fetch(PROXY_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     body: JSON.stringify({ foodName, imageBase64 }),
   });
 

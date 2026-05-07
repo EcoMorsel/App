@@ -14,7 +14,12 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/logo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_MEDIA_IMAGES"
+      ],
+      "package": "com.akashsingh.ecomorsel"
     },
     "web": {
       "bundler": "metro",
@@ -32,26 +37,18 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-web-browser",
-      "@react-native-community/datetimepicker",
-      [
-        "@stripe/stripe-react-native",
-        {
-          "merchantIdentifier": "",
-          "enableGooglePay": true
-        }
-      ],
       "expo-asset",
-      "expo-audio",
       "expo-font",
-      "expo-localization",
-      "expo-mail-composer",
-      "expo-secure-store",
-      "expo-sqlite",
-      "expo-video"
+      "expo-image"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "5f9d8256-643b-45eb-bbfd-b841e1af3380"
+      }
     }
   }
 }

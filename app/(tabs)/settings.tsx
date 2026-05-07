@@ -9,12 +9,12 @@ import {
   TouchableOpacity,
   Switch,
   Platform,
+  Alert,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { Spacing, FontSize, FontWeight, BorderRadius } from '@/constants/theme';
 import { useApp } from '@/hooks/useApp';
-import { useAlert } from '@/template';
 
 const ESTIMATION_SOURCES = [
   { label: 'Water footprint', source: 'Hoekstra & Chapagain (2008), Water Footprint Network' },
@@ -43,11 +43,10 @@ const RESOURCE_GUIDE = [
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
   const { history, clearHistory, themeMode, toggleTheme, C } = useApp();
-  const { showAlert } = useAlert();
   const isLight = themeMode === 'light';
 
   const handleClearData = () => {
-    showAlert('Clear All Data?', 'This will delete your scan history. This cannot be undone.', [
+    Alert.alert('Clear All Data?', 'This will delete your scan history. This cannot be undone.', [
       { text: 'Cancel', style: 'cancel' },
       { text: 'Clear All', style: 'destructive', onPress: clearHistory },
     ]);

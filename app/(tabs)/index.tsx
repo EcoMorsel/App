@@ -77,7 +77,7 @@ export default function HomeScreen() {
               <Ionicons name="leaf" size={12} color={C.primary} />
               <Text style={[styles.heroBadgeText, { color: C.primary }]}>EcoMorsel</Text>
             </View>
-            <Text style={styles.heroTitle}>See the hidden{'\n'}resources behind{' \n'}every bite.</Text>
+            <Text style={styles.heroTitle}>See the hidden{'\n'}cost of food</Text>
             <Text style={styles.heroSubtitle}>
               Every meal has an invisible price
               {'\n'}We make it visible.
